@@ -25,6 +25,11 @@ while IFS= read -u 10 line; do
         echo "Enter nickname for $CHARACTER_NAME:"
         read -r NICKNAME
 
+	# If blank set it to the characters name
+	if [ -z "$NICKNAME" ]; then
+		NICKNAME="$CHARACTER_NAME"
+	fi
+
         # Use psql to check if the nickname already exists
         EXISTS=$(PGPASSWORD=$DB_PASSWORD psql -h localhost -U "$DB_USER" -d "$DB_NAME" -t \
 			-c "SELECT EXISTS(SELECT 1 FROM players WHERE nickname='$NICKNAME');")
